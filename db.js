@@ -7,14 +7,15 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    max: 10, // Maximum number of connections
-    idleTimeoutMillis: 30000, // Close idle connections after 30s
-    connectionTimeoutMillis: 2000, // Timeout if unable to connect
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
 });
 
-// Test Database Connection
-pool.connect()
-    .then(() => console.log("🟢 PostgreSQL Connected Successfully"))
-    .catch(err => console.error("🔴 Database Connection Error:", err.stack));
+if (process.env.NODE_ENV !== 'test') {
+    pool.connect()
+        .then(() => console.log("🟢 PostgreSQL Connected Successfully"))
+        .catch(err => console.error("🔴 Database Connection Error:", err.stack));
+}
 
 module.exports = pool;
